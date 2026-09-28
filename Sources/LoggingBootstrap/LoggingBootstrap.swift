@@ -11,10 +11,8 @@ public actor LoggingBootstrap {
 
     let inMemoryHandler = InMemoryLogHandler()
     private let eventsReporterHandler = LogEventsReporterHandler()
-    
-    private init() {
-      
-    }
+
+    private init() {}
 }
 
 public extension LoggingBootstrap {
@@ -48,19 +46,19 @@ public extension LoggingBootstrap {
         public static let inMemoryLog: Self = .init(rawValue: 1 << 2)
 
         public static let none: Self = []
-        
-#if os(anyAppleOS)
-        public static let all: Self = [.osLog, .eventsReporter, .inMemoryLog]
-#else
-        public static let all: Self = [ .eventsReporter, .inMemoryLog]
-#endif
+
+        #if os(anyAppleOS)
+            public static let all: Self = [.osLog, .eventsReporter, .inMemoryLog]
+        #else
+            public static let all: Self = [.eventsReporter, .inMemoryLog]
+        #endif
     }
 }
 
 public extension LoggingBootstrap {
     func bootstrap(
         options: Options = .all,
-        _ factory: @escaping @Sendable (String) -> (any LogHandler)? = { _ in nil },
+        _ factory: @escaping @Sendable (String) -> (any LogHandler)? = { _ in nil }
     ) {
         assert(isBootstrapped == false)
 

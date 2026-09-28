@@ -16,7 +16,7 @@ public final class LogEventsReporterHandler: LogHandler, @unchecked Sendable {
     public init(
         metadata: Logger.Metadata = [:],
         metadataProvider: Logger.MetadataProvider? = nil,
-        logLevel: Logger.Level = .info,
+        logLevel: Logger.Level = .info
     ) {
         self.metadata = metadata
         self.metadataProvider = metadataProvider

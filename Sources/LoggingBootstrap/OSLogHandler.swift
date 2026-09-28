@@ -7,28 +7,27 @@
     import Logging
     import OSLog
 
-public struct OSLogHandler: LogHandler {
-    
-    public init(
-        label: String,
-        subsystem: String,
-        metadata: Logging.Logger.Metadata = [:],
-        logLevel: Logging.Logger.Level = .debug
-    ) {
-        self.label = label
-        self.subsystem = subsystem
-        self.metadata = metadata
-        self.logLevel = logLevel
-    }
-    
-    public let label: String
-    public let subsystem: String
+    public struct OSLogHandler: LogHandler {
+        public init(
+            label: String,
+            subsystem: String,
+            metadata: Logging.Logger.Metadata = [:],
+            logLevel: Logging.Logger.Level = .debug
+        ) {
+            self.label = label
+            self.subsystem = subsystem
+            self.metadata = metadata
+            self.logLevel = logLevel
+        }
 
-    public  var metadata: Logging.Logger.Metadata
+        public let label: String
+        public let subsystem: String
 
-    public  var logLevel: Logging.Logger.Level
+        public var metadata: Logging.Logger.Metadata
 
-    public  subscript(metadataKey key: String) -> Logging.Logger.Metadata.Value? {
+        public var logLevel: Logging.Logger.Level
+
+        public subscript(metadataKey key: String) -> Logging.Logger.Metadata.Value? {
             get {
                 metadata[key]
             }
@@ -37,7 +36,7 @@ public struct OSLogHandler: LogHandler {
             }
         }
 
-    public  func log(event: LogEvent) {
+        public func log(event: LogEvent) {
             let logger = Logger(subsystem: subsystem, category: label)
 
             let level = OSLogType(event.level)
@@ -46,8 +45,8 @@ public struct OSLogHandler: LogHandler {
         }
     }
 
-    extension OSLogType {
-        public  nonisolated init(_ type: Logging.Logger.Level) {
+    public extension OSLogType {
+        nonisolated init(_ type: Logging.Logger.Level) {
             switch type {
             case .trace:
                 self = .debug
