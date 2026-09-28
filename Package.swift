@@ -26,7 +26,9 @@ let package = Package(
             name: "LoggingBootstrap",
             dependencies: [
             .product(name: "Logging", package: "swift-log"),
-            ]
+            .product(name: "InMemoryLogging", package: "swift-log"),
+            ],
+        
         ),
         .testTarget(
             name: "LoggingBootstrapTests",
