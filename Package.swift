@@ -37,11 +37,6 @@ let targets: [Target]
             ]
 
         ),
-
-        .testTarget(
-            name: "LoggingBootstrapTests",
-            dependencies: ["LoggingBootstrap"]
-        ),
     ]
 #else
     products = [
@@ -59,11 +54,6 @@ let targets: [Target]
                 .product(name: "InMemoryLogging", package: "swift-log"),
             ]
 
-        ),
-
-        .testTarget(
-            name: "LoggingBootstrapTests",
-            dependencies: ["LoggingBootstrap"]
         ),
     ]
 

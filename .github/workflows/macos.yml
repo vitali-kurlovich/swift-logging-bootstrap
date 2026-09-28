@@ -1,4 +1,4 @@
-name: MacOS
+name: Build and Test (MacOS)
 
 on:
   push:
@@ -8,14 +8,20 @@ on:
 
 jobs:
   build:
-    name: MacOS
-    runs-on: macos-latest
-    
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+        swift: ['6.4']
     steps:
-    - uses: actions/checkout@v6
     - uses: SwiftyLab/setup-swift@latest
+      with:
+        swift-version: ${{ matrix.swift }}
 
-    - name: Run Build
-      run: swift build 
+    - uses: actions/checkout@v6
 
-
+    - name: Get swift version
+      run: swift --version
+    - name: Build
+      run: swift build
