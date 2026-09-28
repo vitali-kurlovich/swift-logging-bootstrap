@@ -18,6 +18,10 @@ public struct LoggingViewMessage: Identifiable {
 }
 
 public extension LoggingViewMessage {
+    var description: String {
+        message.description
+    }
+
     var level: Logger.Level {
         entry.level
     }
