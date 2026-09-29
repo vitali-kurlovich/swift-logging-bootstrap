@@ -6,9 +6,7 @@ import Foundation
 import InMemoryLogging
 import Logging
 
-public actor LoggingBootstrap {
-    private var isBootstrapped: Bool = false
-
+public final class LoggingBootstrap: Sendable {
     let inMemoryHandler = InMemoryLogHandler()
     private let eventsReporterHandler = LogEventsReporterHandler()
 
@@ -26,7 +24,7 @@ public extension LoggingBootstrap {
         eventsReporterHandler.events
     }
 
-    var entries: [Entry] {
+    var loggingHistory: [Entry] {
         inMemoryHandler.entries
     }
 }
@@ -60,12 +58,6 @@ public extension LoggingBootstrap {
         options: Options = .all,
         _ factory: @escaping @Sendable (String) -> (any LogHandler)? = { _ in nil }
     ) {
-        assert(isBootstrapped == false)
-
-        guard isBootstrapped == false else {
-            return
-        }
-
         LoggingSystem.bootstrap { [inMemoryHandler, eventsReporterHandler] label in
             var logHandlers: [any LogHandler] = []
 
@@ -91,7 +83,5 @@ public extension LoggingBootstrap {
 
             return MultiplexLogHandler(logHandlers)
         }
-
-        isBootstrapped = true
     }
 }

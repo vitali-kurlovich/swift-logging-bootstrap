@@ -55,14 +55,21 @@ public struct LoggingView<Content: View>: View {
         content(messages)
             .task {
                 let bootstrap = LoggingBootstrap.default
-                let events = await bootstrap.events
-
-                messages = await bootstrap.entries.lazy.enumerated().reversed().map {
+            
+                messages =  bootstrap.loggingHistory
+                    .enumerated()
+                    .lazy
+                    .reversed()
+                    .map {
                     LoggingViewMessage(id: $0.offset, entry: $0.element)
                 }
 
-                for await _ in events {
-                    messages = await bootstrap.entries.lazy.enumerated().reversed().map {
+                for await _ in bootstrap.events {
+                    messages =  bootstrap.loggingHistory
+                        .enumerated()
+                        .lazy
+                        .reversed()
+                        .map {
                         LoggingViewMessage(id: $0.offset, entry: $0.element)
                     }
                 }
