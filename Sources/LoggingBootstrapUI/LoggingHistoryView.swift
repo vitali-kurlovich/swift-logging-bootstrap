@@ -39,7 +39,7 @@ public extension LoggingViewMessage {
     }
 }
 
-public struct LoggingView<Content: View>: View {
+public struct LoggingHistoryView<Content: View>: View {
     private let content: ([LoggingViewMessage]) -> Content
 
     @State
@@ -55,23 +55,23 @@ public struct LoggingView<Content: View>: View {
         content(messages)
             .task {
                 let bootstrap = LoggingBootstrap.default
-            
-                messages =  bootstrap.loggingHistory
+
+                messages = bootstrap.loggingHistory
                     .enumerated()
                     .lazy
                     .reversed()
                     .map {
-                    LoggingViewMessage(id: $0.offset, entry: $0.element)
-                }
+                        LoggingViewMessage(id: $0.offset, entry: $0.element)
+                    }
 
                 for await _ in bootstrap.events {
-                    messages =  bootstrap.loggingHistory
+                    messages = bootstrap.loggingHistory
                         .enumerated()
                         .lazy
                         .reversed()
                         .map {
-                        LoggingViewMessage(id: $0.offset, entry: $0.element)
-                    }
+                            LoggingViewMessage(id: $0.offset, entry: $0.element)
+                        }
                 }
             }
     }
