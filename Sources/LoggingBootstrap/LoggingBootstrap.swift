@@ -21,7 +21,7 @@ public extension LoggingBootstrap {
     typealias Entry = InMemoryLogHandler.Entry
 
     var events: AsyncStream<LogEvent> {
-        eventsReporterHandler.events
+        eventsReporterHandler.loggingEvents
     }
 
     var loggingHistory: [Entry] {

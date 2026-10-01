@@ -27,11 +27,17 @@ public final class LogEventsReporterHandler: LogHandler, @unchecked Sendable {
         self.continuation = continuation
     }
 
-    public var events: AsyncStream<LogEvent> {
+    public var loggingEvents: AsyncStream<LogEvent> {
+        loggingEvents(level: logLevel)
+    }
+
+    public func loggingEvents(level: Logger.Level) -> AsyncStream<LogEvent> {
         AsyncStream<LogEvent> { continuation in
             let task = Task {
                 for await event in self.eventsStream {
-                    continuation.yield(event)
+                    if event.level >= level {
+                        continuation.yield(event)
+                    }
                 }
                 continuation.finish()
             }
