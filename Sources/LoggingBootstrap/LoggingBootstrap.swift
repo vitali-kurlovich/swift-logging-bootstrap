@@ -6,8 +6,8 @@ import Foundation
 import InMemoryLogging
 import Logging
 
-public final class LoggingBootstrap: Sendable {
-    let inMemoryHandler = InMemoryLogHandler()
+public final class LoggingBootstrap: @unchecked Sendable {
+    var inMemoryHandler = InMemoryLogHandler()
     private let eventsReporterHandler = LogEventsReporterHandler()
 
     private init() {}
@@ -56,8 +56,11 @@ public extension LoggingBootstrap {
 public extension LoggingBootstrap {
     func bootstrap(
         options: Options = .all,
+        logLevel: Logger.Level = .info,
         _ factory: @escaping @Sendable (String) -> (any LogHandler)? = { _ in nil }
     ) {
+        inMemoryHandler.logLevel = logLevel
+
         LoggingSystem.bootstrap { [inMemoryHandler, eventsReporterHandler] label in
             var logHandlers: [any LogHandler] = []
 
