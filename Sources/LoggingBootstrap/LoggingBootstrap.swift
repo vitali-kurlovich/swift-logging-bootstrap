@@ -20,12 +20,16 @@ public extension LoggingBootstrap {
 public extension LoggingBootstrap {
     typealias Entry = InMemoryLogHandler.Entry
 
+    var loggingHistory: [Entry] {
+        inMemoryHandler.entries
+    }
+
     var events: AsyncStream<LogEvent> {
         eventsReporterHandler.loggingEvents
     }
 
-    var loggingHistory: [Entry] {
-        inMemoryHandler.entries
+    func loggingEvents(level: Logger.Level) -> AsyncStream<LogEvent> {
+        eventsReporterHandler.loggingEvents(level: level)
     }
 }
 
