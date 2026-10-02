@@ -2,6 +2,7 @@
 //  Created by Kurlovich Vitali on 6/2/26.
 //
 
+import AsyncAlgorithms
 import Foundation
 import Logging
 
@@ -10,7 +11,7 @@ public final class LogEventsReporterHandler: LogHandler, @unchecked Sendable {
     public var metadataProvider: Logger.MetadataProvider?
     public var logLevel: Logger.Level = .info
 
-    private let eventsStream: AsyncStream<LogEvent>
+    private let eventsStream: any AsyncSequence<LogEvent, Never>
     private let continuation: AsyncStream<LogEvent>.Continuation
 
     public init(
@@ -23,7 +24,7 @@ public final class LogEventsReporterHandler: LogHandler, @unchecked Sendable {
         self.logLevel = logLevel
 
         let (stream, continuation) = AsyncStream.makeStream(of: LogEvent.self)
-        eventsStream = stream
+        eventsStream = stream.share()
         self.continuation = continuation
     }
 
@@ -32,7 +33,9 @@ public final class LogEventsReporterHandler: LogHandler, @unchecked Sendable {
     }
 
     public func loggingEvents(level: Logger.Level) -> AsyncStream<LogEvent> {
-        AsyncStream<LogEvent> { continuation in
+        AsyncStream<LogEvent>(
+            bufferingPolicy: .bufferingNewest(1)
+        ) { continuation in
             let task = Task {
                 for await event in self.eventsStream {
                     if event.level >= level {

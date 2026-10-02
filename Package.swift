@@ -24,6 +24,7 @@ let targets: [Target]
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "InMemoryLogging", package: "swift-log"),
+                .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
             ]
 
         ),
@@ -52,6 +53,7 @@ let targets: [Target]
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "InMemoryLogging", package: "swift-log"),
+                .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
             ]
 
         ),
@@ -62,15 +64,16 @@ let targets: [Target]
 let package = Package(
     name: "swift-logging-bootstrap",
     platforms: [
-        .macOS(.v14),
-        .iOS(.v16),
-        .watchOS(.v10),
-        .tvOS(.v17),
+        .macOS(.v15),
+        .iOS(.v18),
+        .watchOS(.v11),
+        .tvOS(.v18),
     ],
     products: products,
     dependencies: [
-        .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.1.0"),
         .package(url: "https://github.com/apple/swift-log", from: "1.15.1"),
+        .package(url: "https://github.com/apple/swift-async-algorithms", from: "1.0.0"),
+        .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.1.0"),
     ],
     targets: targets
 )
