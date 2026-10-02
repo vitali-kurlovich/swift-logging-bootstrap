@@ -24,7 +24,12 @@ public extension LoggingBootstrap {
         inMemoryHandler.entries
     }
 
+    @available(*, deprecated, renamed: "loggingEvents", message: "Use loggingEvents")
     var events: AsyncStream<LogEvent> {
+        loggingEvents
+    }
+
+    var loggingEvents: AsyncStream<LogEvent> {
         eventsReporterHandler.loggingEvents
     }
 
@@ -64,7 +69,7 @@ public extension LoggingBootstrap {
         _ factory: @escaping @Sendable (String) -> (any LogHandler)? = { _ in nil }
     ) {
         inMemoryHandler.logLevel = logLevel
-
+        eventsReporterHandler.logLevel = logLevel
         LoggingSystem.bootstrap { [inMemoryHandler, eventsReporterHandler] label in
             var logHandlers: [any LogHandler] = []
 
