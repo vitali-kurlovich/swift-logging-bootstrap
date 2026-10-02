@@ -53,9 +53,8 @@ public struct LoggingHistoryView<Content: View>: View {
 
     public var body: some View {
         content(messages)
-            .task {
+            .onAppear {
                 let bootstrap = LoggingBootstrap.default
-
                 messages = bootstrap.loggingHistory
                     .enumerated()
                     .lazy
@@ -63,6 +62,9 @@ public struct LoggingHistoryView<Content: View>: View {
                     .map {
                         LoggingViewMessage(id: $0.offset, entry: $0.element)
                     }
+            }
+            .task {
+                let bootstrap = LoggingBootstrap.default
 
                 for await _ in bootstrap.events {
                     messages = bootstrap.loggingHistory
