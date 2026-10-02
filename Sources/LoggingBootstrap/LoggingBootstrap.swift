@@ -24,11 +24,6 @@ public extension LoggingBootstrap {
         inMemoryHandler.entries
     }
 
-    @available(*, deprecated, renamed: "loggingEvents", message: "Use loggingEvents")
-    var events: AsyncStream<LogEvent> {
-        loggingEvents
-    }
-
     var loggingEvents: AsyncStream<LogEvent> {
         eventsReporterHandler.loggingEvents
     }
